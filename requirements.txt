@@ -1,0 +1,28 @@
+anyio @ file:///home/conda/feedstock_root/build_artifacts/anyio_1652463865103/work/dist
+argon2-cffi @ file:///home/conda/feedstock_root/build_artifacts/argon2-cffi_1640817743617/work
+argon2-cffi-bindings @ file:///home/conda/feedstock_root/build_artifacts/argon2-cffi-bindings_1649500328244/work
+asgiref @ file:///home/conda/feedstock_root/build_artifacts/asgiref_1652752042988/work
+bcrypt @ file:///home/conda/feedstock_root/build_artifacts/bcrypt_1651441522321/work
+cffi @ file:///home/conda/feedstock_root/build_artifacts/cffi_1636046050867/work
+click @ file:///home/conda/feedstock_root/build_artifacts/click_1651215151197/work
+cryptography @ file:///home/conda/feedstock_root/build_artifacts/cryptography_1652967019182/work
+ecdsa @ file:///home/conda/feedstock_root/build_artifacts/ecdsa_1622145559160/work
+fastapi @ file:///home/conda/feedstock_root/build_artifacts/fastapi_1652577626630/work
+flit_core @ file:///home/conda/feedstock_root/build_artifacts/flit-core_1645629044586/work/source/flit_core
+greenlet @ file:///home/conda/feedstock_root/build_artifacts/greenlet_1648882383677/work
+h11 @ file:///home/conda/feedstock_root/build_artifacts/h11_1652727116927/work
+idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1642433548627/work
+passlib==1.7.4
+psycopg2 @ file:///home/conda/feedstock_root/build_artifacts/psycopg2-split_1640944506498/work
+pyasn1==0.4.8
+pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1636257122734/work
+pydantic @ file:///home/conda/feedstock_root/build_artifacts/pydantic_1653020724956/work
+python-jose @ file:///home/conda/feedstock_root/build_artifacts/python-jose_1624701740191/work
+python-multipart==0.0.5
+rsa @ file:///home/conda/feedstock_root/build_artifacts/rsa_1637781155505/work
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+sniffio @ file:///home/conda/feedstock_root/build_artifacts/sniffio_1648819179288/work
+SQLAlchemy @ file:///home/conda/feedstock_root/build_artifacts/sqlalchemy_1651017955343/work
+starlette @ file:///home/conda/feedstock_root/build_artifacts/starlette-recipe_1650649298613/work
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1650370875435/work
+uvicorn @ file:///home/conda/feedstock_root/build_artifacts/uvicorn-split_1650301135999/work

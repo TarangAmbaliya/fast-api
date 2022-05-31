@@ -1,0 +1,22 @@
+services:
+  user-api:
+    container_name: USER-CRUD
+    build: .
+    ports:
+      - "80:5000"
+    depends_on:
+      - postgre-db
+
+  postgre-db:
+    container_name: DATABASE
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - postgre-data:/var/lib/postgresql/data
+
+volumes:
+  postgre-data: {}
