@@ -1,3 +1,7 @@
+"""
+Factory file for the app. App execution starts from this file.
+"""
+
 from fastapi import FastAPI
 
 from app.resource import createUser
