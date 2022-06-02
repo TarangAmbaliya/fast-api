@@ -2,17 +2,18 @@
 User Login operations.
 """
 
-from fastapi import Body, Response, status
+from fastapi import HTTPException
 
 from app.resource import router
-from app.models.user import User
 from app.models import session
+from app.models.user import User
+from app.schemas import UserLoginSchema
 from app.auth.passOps import verify_hash
-from app.auth.tokenOps import cook_access_token
+from app.auth.tokenOps import cook_token
 
 
 @router.get('/login')
-async def login(response: Response, email: str = Body('email'), password: str = Body('password')) -> dict or None:
+async def login(data: UserLoginSchema) -> dict:
     """
     User login implementation.
 
@@ -22,23 +23,24 @@ async def login(response: Response, email: str = Body('email'), password: str = 
             "password": "ExamplePassword"
         }
 
-    :param response: Used internally by the app to produce HTTP response codes.
-    :param email: User email.
-    :param password: User password.
-    :return: Returns a response code 200 with a dict containing access token if user present in database.
-        Returns None with response code 400 if no entry found in the database.
-        Returns None with respose code 401 if password is incorrect.
+    :param data:
+        Login credentials in format as shown in the example.
+    :return:
+        A dict containing access token & a refresh token.
+
+    :raises HTTPException:
+        Status code 401 incase of invalid credentials.
+        Status code 400 if no user found.
     """
     db = session()
-    query = db.query(User).filter(User.email == email).first()
+    query = db.query(User).filter(User.email == data.email).first()
     if query:
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        if verify_hash(in_password=password, in_hash=query.password):
-            response.status_code = status.HTTP_200_OK
-            token = cook_access_token(query.name)
-            return {'Access Token': token}
+        if verify_hash(in_password=data.password, in_hash=query.password):
+            return {
+                'Access Token': cook_token(identity=query.name),
+                'Refresh Token': cook_token(identity=query.name, refresh=True)
+                    }
         else:
-            response.status_code = status.HTTP_401_UNAUTHORIZED
-            return
+            raise HTTPException(status_code=401, detail='Invalid Credentials.')
     else:
-        return
+        raise HTTPException(status_code=400, detail='No User found.')

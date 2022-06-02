@@ -3,7 +3,7 @@ Register new users and add them to the database.
 """
 
 from sqlalchemy.exc import IntegrityError
-from fastapi import Response, status
+from fastapi import HTTPException
 
 from app.models import session
 from app.models.user import User
@@ -13,7 +13,7 @@ from app.auth.passOps import generate_hash
 
 
 @router.post('/register')
-async def create_user(response: Response, user: UserSchema) -> dict or None:
+async def create_user(data: UserSchema) -> dict | None:
     """
     Get Request Data and create a user with that data.
 
@@ -23,21 +23,21 @@ async def create_user(response: Response, user: UserSchema) -> dict or None:
             "email": "example@email.com",
             "password": "ExamplePassword"
         }
-
-    :param response: Used internally by the app to produce HTTP response codes.
-    :param user: User data in format as shown in the example.
-    :return: Response code 200 upon successfull data validation.
-        Returns None with response code 400 if user already exists.
-        Returns a response code 400 and a dict with missing parameters iscase of partial input.
+.
+    :param data:
+        User data in format as shown in the example.
+    :return:
+        Dict with missing parameters iscase of partial input.
+    :raises HTTPException:
+        Status code 400 if user already exists.
+        Status code 200 if successfully registered.
     """
-    query = User(name=user.name, email=user.email, password=generate_hash(user.password))
+    query = User(name=data.name, email=data.email, password=generate_hash(data.password))
     db = session()
     db.add(query)
     try:
         db.commit()
     except IntegrityError:
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return
+        raise HTTPException(status_code=400, detail='User already exists.')
     db.close()
-    response.status_code = status.HTTP_200_OK
     return
