@@ -2,7 +2,7 @@
 Database Model for the Users.
 """
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 
 from app.models import Base
 
@@ -19,3 +19,5 @@ class User(Base):
     name = Column(String, nullable=False, index=True)
     email = Column(String, nullable=True, unique=True, index=True)
     password = Column(String, nullable=False, index=True)
+    is_active = Column(Boolean, nullable=True, index=True)
+    is_verified = Column(Boolean, nullable=True, index=True)

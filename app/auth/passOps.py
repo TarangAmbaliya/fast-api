@@ -1,6 +1,7 @@
 """
 Password Operations.
 """
+from passlib.exc import UnknownHashError
 
 from app.auth import encrypt
 
@@ -28,4 +29,7 @@ def verify_hash(in_password: str, in_hash: str) -> bool:
     :return:
         True if hash matches, False if it dosen't.
     """
-    return encrypt.verify(secret=in_password, hash=in_hash)
+    try:
+        return encrypt.verify(secret=in_password, hash=in_hash)
+    except UnknownHashError:
+        return False

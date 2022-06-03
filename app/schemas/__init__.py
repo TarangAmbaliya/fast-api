@@ -9,6 +9,7 @@ class UserSchema(BaseModel):
     """
     Inherit BaseModel from pydantic, create a Schema class for User data validation when making entry in the database.
     """
+
     name: str
     email: str
     password: str
@@ -17,6 +18,7 @@ class UserSchema(BaseModel):
         """
         Nested class to define that we are using ORM (sqlalchemy) for database operations.
         """
+
         orm_mode = True
         schema_extra = {
             "example": {
@@ -29,7 +31,8 @@ class UserSchema(BaseModel):
 
 class UserLoginSchema(BaseModel):
     """
-    Inherit BaseModel from pyantic, create a Schema class for User login data validation.
+    Inherit BaseModel from pyantic, create a Schema class for User login data validation,
+    including example for input.
     """
 
     email: str
@@ -37,12 +40,39 @@ class UserLoginSchema(BaseModel):
 
     class Config:
         """
-        Nested class to define that we are using ORM (sqlalchemy) for database operations.
+        Nested class to define that we are using ORM (sqlalchemy) for database operations,
+        including example for input.
         """
+
         orm_mode = True
         schema_extra = {
             "example": {
                 "email": "example@mail.com",
                 "password": "ExamplePassword"
+            }
+        }
+
+
+class UserResetPassSchema(BaseModel):
+    """
+    Inherit BaseModel from pydantic, create a Schema class for User Password Reseting.
+    """
+
+    email: str
+    old_password: str
+    new_password: str
+
+    class Config:
+        """
+        Nested class to define that we are using ORM (sqlalchemy) for database operations,
+        including example for input.
+        """
+
+        orm_mode = True
+        schema_extra = {
+            "example":{
+                "email": "example@mail.com",
+                "old_password": "ExampleOldPassword",
+                "new_password": "ExampleNewPassword"
             }
         }
