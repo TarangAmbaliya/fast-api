@@ -15,7 +15,7 @@ from app.auth.tokenOps import check_token
 
 
 @router.post('/reset')
-def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentials = Security(auth_me)) -> None:
+async def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentials = Security(auth_me)) -> None:
     """
     This Function implements the password reset feature.
 
@@ -29,7 +29,7 @@ def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentials = S
     :param data: Data in format as show in the example.
     :return: None
     :raises HTTPException:
-        Status code 401 if token invalid, expired or not fresh.
+        Status code 401 if the token is invalid, expired.
         Status code 400 if no user found.
     """
     in_token = token.credentials

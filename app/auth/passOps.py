@@ -1,6 +1,7 @@
 """
 Password Operations.
 """
+
 from passlib.exc import UnknownHashError
 
 from app.auth import encrypt

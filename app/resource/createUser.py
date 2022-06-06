@@ -9,7 +9,6 @@ from app.models import session
 from app.models.user import User
 from app.schemas import UserSchema
 from app.resource import router
-from app.auth.passOps import generate_hash
 
 
 @router.post('/register')
@@ -32,7 +31,7 @@ async def create_user(data: UserSchema) -> dict | None:
         Status code 400 if user already exists.
         Status code 200 if successfully registered.
     """
-    query = User(name=data.name, email=data.email, password=generate_hash(data.password))
+    query = User(name=data.name, email=data.email, password=data.password)
     db = session()
     db.add(query)
     try:
