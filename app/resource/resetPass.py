@@ -9,13 +9,13 @@ from app.resource import router
 from app.schemas import UserResetPassSchema
 from app.models import session
 from app.models.user import User
-from app.auth import auth_me
 from app.auth.passOps import generate_hash, verify_hash
-from app.auth.tokenOps import check_token
+from app.auth.tokenOps import jwt_required
 
 
+@jwt_required
 @router.post('/reset')
-async def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentials = Security(auth_me)) -> None:
+async def pwd_reset(data: UserResetPassSchema) -> None:
     """
     This Function implements the password reset feature.
 
@@ -25,15 +25,9 @@ async def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentia
         "new_password": "ExampleNewPassword"
     }
 
-    :param token: Authorization token recieved in the request.
     :param data: Data in format as show in the example.
     :return: None
-    :raises HTTPException:
-        Status code 401 if the token is invalid, expired.
-        Status code 400 if no user found.
     """
-    in_token = token.credentials
-    check_token(in_token=in_token)
     db = session()
     query = db.query(User).filter(User.email == data.email).first()
     if query:
