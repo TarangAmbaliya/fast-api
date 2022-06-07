@@ -4,4 +4,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-RUN uvicorn app:app --reload
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0"]
