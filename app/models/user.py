@@ -3,6 +3,7 @@ Database Model for the Users.
 """
 
 from sqlalchemy import Column, Integer, String, Boolean
+from pydantic import EmailStr
 
 from app.models import Base
 from app.auth.passOps import generate_hash
@@ -25,7 +26,7 @@ class User(Base):
 
     def __init__(self, name, email, password, is_active=True, is_verified=False):
         self.name = name
-        self.email = email
+        self.email = EmailStr(email)
         self.password = generate_hash(password)
         self.is_active = is_active
         self.is_verified = is_verified

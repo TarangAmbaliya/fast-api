@@ -9,13 +9,13 @@ from app.resource import router
 from app.schemas import UserResetPassSchema
 from app.models import session
 from app.models.user import User
+from app.auth import auth_me
 from app.auth.passOps import generate_hash, verify_hash
-from app.auth.tokenOps import jwt_required
+from app.auth.tokenOps import check_token
 
 
-@jwt_required
 @router.post('/reset')
-async def pwd_reset(data: UserResetPassSchema) -> None:
+async def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentials = Security(auth_me)) -> None:
     """
     This Function implements the password reset feature.
 
@@ -25,16 +25,22 @@ async def pwd_reset(data: UserResetPassSchema) -> None:
         "new_password": "ExampleNewPassword"
     }
 
+    :param token: User JWT.
     :param data: Data in format as show in the example.
     :return: None
     """
-    db = session()
-    query = db.query(User).filter(User.email == data.email).first()
-    if query:
-        if verify_hash(data.old_password, query.password):
-            query.password = generate_hash(data.new_password)
+
+    claims = check_token(in_token=token.credentials)
+    if claims.get('scope') == 'access_token':
+        db = session()
+        query = db.query(User).filter(User.email == data.email).first()
+        if query:
+            if verify_hash(data.old_password, query.password):
+                query.password = generate_hash(data.new_password)
+            else:
+                raise HTTPException(status_code=401, detail='Incorrect Old Password.')
+            db.commit()
         else:
-            raise HTTPException(status_code=401, detail='Incorrect Old Password.')
-        db.commit()
+            raise HTTPException(status_code=400, detail='No user found.')
     else:
-        raise HTTPException(status_code=400, detail='No user found.')
+        raise HTTPException(status_code=400, detail='LOL!!!')

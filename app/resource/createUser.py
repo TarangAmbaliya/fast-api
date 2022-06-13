@@ -1,7 +1,8 @@
 """
 Register new users and add them to the database.
 """
-
+from pydantic import EmailStr
+from pydantic.error_wrappers import ValidationError
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 
@@ -9,6 +10,7 @@ from app.models import session
 from app.models.user import User
 from app.schemas import UserSchema
 from app.resource import router
+from app.tasks.email import welcome_email
 
 
 @router.post('/register')
@@ -39,4 +41,8 @@ async def create_user(data: UserSchema) -> dict | None:
     except IntegrityError:
         raise HTTPException(status_code=400, detail='User already exists.')
     db.close()
+    try:
+        await welcome_email(to=EmailStr(str(data.email)), username=data.name)
+    except ValidationError:
+        raise HTTPException(status_code=400, detail='Invalid Email.')
     return
