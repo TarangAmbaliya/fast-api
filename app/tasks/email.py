@@ -2,10 +2,10 @@
 This module implements email.
 """
 
-from pydantic import EmailStr
 from fastapi_mail import MessageSchema
+from pydantic import EmailStr
 
-from app.tasks import conf, email
+from app.tasks import email
 
 
 async def welcome_email(to: EmailStr, username: str) -> None:

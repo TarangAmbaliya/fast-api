@@ -4,12 +4,12 @@ User Login operations.
 
 from fastapi import HTTPException
 
-from app.resource import router
-from app.models import session
-from app.models.user import User
-from app.schemas import UserLoginSchema
 from app.auth.passOps import verify_hash
 from app.auth.tokenOps import cook_token
+from app.models import session
+from app.models.user import User
+from app.resource import router
+from app.schemas import UserLoginSchema
 
 
 @router.get('/login')
@@ -39,7 +39,7 @@ async def login(data: UserLoginSchema) -> dict:
             return {
                 'Access Token': cook_token(identity=query.name),
                 'Refresh Token': cook_token(identity=query.name, refresh=True)
-                    }
+            }
         else:
             raise HTTPException(status_code=401, detail='Invalid Credentials.')
     else:

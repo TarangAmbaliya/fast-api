@@ -1,12 +1,14 @@
 """
-Creating objects and defining configuration parameters for database Models, relationships and operations.
+Creating objects and defining configuration
+parameters for database Models,
+relationships and operations.
 """
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-from app.config import SQLALCHEMY_TRACK_MODIFICATIONS, SQLALCHEMY_DATABASE_URI
+from app.config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
 
 SQLALCHEMY_TRACK_MODIFICATIONS = SQLALCHEMY_TRACK_MODIFICATIONS
 SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI

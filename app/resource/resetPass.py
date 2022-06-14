@@ -5,17 +5,20 @@ This file enables the user to reset there password using a fresh type JWT.
 from fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials
 
-from app.resource import router
-from app.schemas import UserResetPassSchema
-from app.models import session
-from app.models.user import User
 from app.auth import auth_me
 from app.auth.passOps import generate_hash, verify_hash
 from app.auth.tokenOps import check_token
+from app.models import session
+from app.models.user import User
+from app.resource import router
+from app.schemas import UserResetPassSchema
 
 
 @router.post('/reset')
-async def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentials = Security(auth_me)) -> None:
+async def pwd_reset(
+        data: UserResetPassSchema,
+        token: HTTPAuthorizationCredentials = Security(auth_me)
+) -> None:
     """
     This Function implements the password reset feature.
 
@@ -38,7 +41,10 @@ async def pwd_reset(data: UserResetPassSchema, token: HTTPAuthorizationCredentia
             if verify_hash(data.old_password, query.password):
                 query.password = generate_hash(data.new_password)
             else:
-                raise HTTPException(status_code=401, detail='Incorrect Old Password.')
+                raise HTTPException(
+                    status_code=401,
+                    detail='Incorrect Old Password.'
+                )
             db.commit()
         else:
             raise HTTPException(status_code=400, detail='No user found.')

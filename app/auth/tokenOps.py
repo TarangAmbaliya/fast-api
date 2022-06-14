@@ -1,15 +1,13 @@
 """
 Token Operations.
 """
-from typing import Callable
 
-from fastapi import HTTPException, Security
-from fastapi.security import HTTPAuthorizationCredentials
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
+
+from fastapi import HTTPException
 from jose import jwt
 
-from app.config import SECRET_KEY, ALGORITHM
-from app.auth import auth_me
+from app.config import ALGORITHM, SECRET_KEY
 
 
 def cook_token(identity: str,
@@ -60,22 +58,3 @@ def check_token(in_token: str) -> dict:
         raise HTTPException(status_code=401, detail='Token expired.')
     except jwt.JWTError:
         raise HTTPException(400, detail='Invalid token.')
-
-
-def jwt_required(func) -> Callable:
-    """
-    This function implements JWT for the endpoint.
-
-    :param func: A Route endpoint that is to be protected with token.
-    :return: The reqested function if token was validated.
-    """
-    def decorator(token: HTTPAuthorizationCredentials = Security(auth_me)):
-        """
-        This is a decorator function.
-
-        :param token: The token recieved in the Request Header.
-        :return: None if the token varifies.
-        """
-        check_token(in_token=token.credentials)
-
-    return func

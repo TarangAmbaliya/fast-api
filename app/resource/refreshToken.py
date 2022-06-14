@@ -6,12 +6,14 @@ from fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.auth import auth_me
-from app.auth.tokenOps import cook_token, check_token
+from app.auth.tokenOps import check_token, cook_token
 from app.resource import router
 
 
 @router.get('/token/refresh')
-async def refresh_token(token: HTTPAuthorizationCredentials = Security(auth_me)):
+async def refresh_token(
+        token: HTTPAuthorizationCredentials = Security(auth_me)
+):
     """
     Cook a access token from the refresh token.
 

@@ -9,7 +9,8 @@ from app.auth import encrypt
 
 def generate_hash(password: str) -> str:
     """
-    This function should be used whenever creating a hash throughout the app context.
+    This function should be used whenever
+    creating a hash throughout the app context.
 
     :param password:
         Password of the user.
@@ -21,7 +22,8 @@ def generate_hash(password: str) -> str:
 
 def verify_hash(in_password: str, in_hash: str) -> bool:
     """
-    This function should be used whenever verifing hash throughout the app context.
+    This function should be used whenever
+    verifing hash throughout the app context.
 
     :param in_password:
         The password entered by the user during login.
